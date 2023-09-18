@@ -28,12 +28,12 @@ cascade_mode_list =    {1, 2, 2, 2}       -- 0: Single chip, 1: Master, 2: Slave
 
 -- metaImagePath  =   RSTD.BrowseForFile(RSTD.GetSettingsPath(), "bin", "Browse to .bin file")
 -- For 2243 ES1.1 devices
-metaImagePath            =   "C:\\ti\\mmwave_dfp_02_02_02_01\\firmware\\xwr22xx_metaImage.bin"
+metaImagePath            =   "E:\\ti\\mmwave_dfp_02_02_04_00\\firmware\\xwr22xx_metaImage.bin"
 -- For 2243 ES1.0 devices
 -- metaImagePath            =   "C:\\ti\\mmwave_dfp_02_02_00_02\\firmware\\xwr22xx_metaImage.bin"
 
  -- temperature logging file info
-temperaturelogFilePath = "C:\\ti\\mmwave_studio_03_00_00_14\\mmWaveStudio\\PostProc\\Cascade_PhaseShifterCal_testdata\\"
+temperaturelogFilePath = "E:\\ti\\mmwave_studio_03_00_00_14\\mmWaveStudio\\PostProc\\Cascade_PhaseShifterCal_testdata\\"
 temperatureLogFileName = "Cascade_TXBF_Temperature_Log_AWR2243_cal.csv"
 
 -- IP Address for the TDA2 Host Board
@@ -60,12 +60,12 @@ Change the values below as needed. --]]
 -- Profile configuration
 local profile_indx              =   0
 local start_freq                =   77     -- GHz
-local slope                     =   79     -- MHz/us
-local idle_time                 =   5      -- us
+local slope                     =   50     -- MHz/us
+local idle_time                 =   10      -- us
 local adc_start_time            =   6      -- us
 local adc_samples               =   256    -- Number of samples per chirp
-local sample_freq               =   8000   -- ksps
-local ramp_end_time             =   40     -- us
+local sample_freq               =   10000   -- ksps
+local ramp_end_time             =   60     -- us
 local rx_gain                   =   48     -- dB
 local tx0OutPowerBackoffCode    =   0
 local tx1OutPowerBackoffCode    =   0
@@ -80,15 +80,15 @@ local hpfCornerFreq2            =   0      -- 0: 350KHz, 1: 700KHz, 2: 1.4MHz, 3
 -- Frame configuration    
 local start_chirp_tx            =   0
 local end_chirp_tx              =   11
-local nchirp_loops              =   64     -- Number of chirps per frame
-local nframes_master            =   10     -- Number of Frames for Master
-local nframes_slave             =   10     -- Number of Frames for Slaves
-local Inter_Frame_Interval      =   100    -- ms
+local nchirp_loops              =   128     -- Number of chirps per frame
+local nframes_master            =   3     -- Number of Frames for Master
+local nframes_slave             =   3     -- Number of Frames for Slaves
+local Inter_Frame_Interval      =   200    -- ms
 local trigger_delay             =   0      -- us
 local trig_list                 =   {1,2,2,2} -- 1: Software trigger, 2: Hardware trigger    
 
 -- Data capture
-local capture_time					=	2000                         -- ms
+local capture_time					=	3000                         -- ms
 local inter_loop_time				=	2000						 -- ms
 local num_loops						=	1
 local n_files_allocation            =   0

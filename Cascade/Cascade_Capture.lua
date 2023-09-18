@@ -15,8 +15,8 @@ actual duration of capture. The actual capture duration depends on the configure
 and number of frames.
 --]]
 
-capture_time                     =   2000                             -- ms
-inter_loop_time                  =   2000                             -- ms
+capture_time                     =   1000 * 60                             -- ms
+inter_loop_time                  =   1000 * 3                             -- ms
 num_loops                        =   1
 
 --[[
@@ -41,8 +41,8 @@ Note: Change the following three parameters as desired:
 
 n_files_allocation              =   0
 data_packaging                  =   0                       -- 0: 16-bit, 1: 12-bit
-capture_directory               =   "Cascade_Capture_22xx"
-num_frames_to_capture           =   0                       -- 0: default case; Any positive value - number of frames to capture 
+capture_directory               =   "TxBF_USRR_BeamAngle_test558"
+num_frames_to_capture           =   100                   -- 0: default case; Any positive value - number of frames to capture,  maxmum=1000
 
 framing_type                    =   1                       -- 0: infinite, 1: finite
 stop_frame_mode                 =   0                       -- 0: Frame boundary, 2: Sub-frame boundary, 

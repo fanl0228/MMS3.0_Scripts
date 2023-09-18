@@ -28,8 +28,8 @@ cascade_mode_list        =    {1, 2, 2, 2}      -- 0: Single chip, 1: Master, 2:
 -- By default, the firmware filename is: xwr22xx_metaImage.bin
 --
 -- metaImagePath         =   RSTD.BrowseForFile(RSTD.GetSettingsPath(), "bin", "Browse to .bin file")
--- For 2243 ES1.1 devices
-metaImagePath            =   "C:\\ti\\mmwave_dfp_02_02_02_01\\firmware\\xwr22xx_metaImage.bin"
+-- For 2243 ES1.1 devices  E:\ti\mmwave_dfp_02_02_04_00
+metaImagePath            =   "E:\\ti\\mmwave_dfp_02_02_04_00\\firmware\\xwr22xx_metaImage.bin"
 -- For 2243 ES1.0 devices
 -- metaImagePath            =   "C:\\ti\\mmwave_dfp_02_02_00_02\\firmware\\xwr22xx_metaImage.bin"
 

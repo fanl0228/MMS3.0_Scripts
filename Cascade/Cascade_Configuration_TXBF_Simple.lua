@@ -22,7 +22,8 @@ cascade_mode_list				=	{1, 2, 2, 2}				    -- 0: Single chip, 1: Master, 2: Slav
 --
 -- metaImagePath                   =   RSTD.BrowseForFile(RSTD.GetSettingsPath(), "bin", "Browse to .bin file")
 -- For 2243 ES1.1 devices
-metaImagePath            =   "C:\\ti\\mmwave_dfp_02_02_02_01\\firmware\\xwr22xx_metaImage.bin"
+-- metaImagePath            =   "C:\\ti\\mmwave_dfp_02_02_02_01\\firmware\\xwr22xx_metaImage.bin"
+metaImagePath            =   "E:\\ti\\mmwave_dfp_02_02_04_00\\firmware\\xwr22xx_metaImage.bin"
 -- For 2243 ES1.0 devices
 -- metaImagePath            =   "C:\\ti\\mmwave_dfp_02_02_00_02\\firmware\\xwr22xx_metaImage.bin"
 
@@ -31,7 +32,7 @@ metaImagePath            =   "C:\\ti\\mmwave_dfp_02_02_02_01\\firmware\\xwr22xx_
 TDA_IPAddress                   =   "192.168.33.180"
 
 runConfiguration = 1	-- optional flag to run whole configuration of MMWCAS-RF-EVM or just the device config (after firmware and RF connect)
-runWithCalibration = 1	-- flag to run with or without calibrated phase shifter settings
+runWithCalibration = 0	-- flag to run with or without calibrated phase shifter settings
 
 -- Device map of all the devices to be enabled by TDA
 -- 1 - master ; 2- slave1 ; 4 - slave2 ; 8 - slave3
@@ -53,13 +54,13 @@ deviceMapSlaves                 =   (RadarDevice[2]*2) + (RadarDevice[3]*4) + (R
 -- Profile configuration
 local profile_indx              =   0
 local start_freq				=	77								-- GHz
-local slope						=	79  							-- MHz/us
-local idle_time					=	5								-- us
+local slope						=	50  							-- MHz/us
+local idle_time					=	20								-- us
 local adc_start_time			=	6								-- us
-local adc_samples				=	256							    -- Number of samples per chirp
+local adc_samples				=	64							    -- Number of samples per chirp
 local sample_freq				=	8000							-- ksps
 local ramp_end_time				=	40								-- us
-local rx_gain					=	48								-- dB
+local rx_gain					=	40								-- dB
 local tx0OutPowerBackoffCode    =   0
 local tx1OutPowerBackoffCode    =   0
 local tx2OutPowerBackoffCode    =   0
@@ -73,10 +74,10 @@ local hpfCornerFreq2            =   0                               -- 0: 350KHz
 -- Frame configuration	
 local start_chirp_tx			=	0
 local end_chirp_tx				=	0
-local nchirp_loops				=	128								-- Number of chirps per frame
-local nframes_master			=	3							    -- Number of Frames for Master
-local nframes_slave			    =	3							    -- Number of Frames for Slaves
-local Inter_Frame_Interval		=	100								-- ms
+local nchirp_loops				=	236								-- Number of chirps per frame
+local nframes_master			=	10							    -- Number of Frames for Master
+local nframes_slave			    =	10							    -- Number of Frames for Slaves
+local Inter_Frame_Interval		=	200								-- ms
 local trigger_delay             =   0                               -- us
 local nDummy_chirp              =   0       
 local trig_list					=	{1,2,2,2}	                    -- 1: Software trigger, 2: Hardware trigger    
@@ -95,9 +96,9 @@ local framing_type                  =   1                                -- 0: i
 -- map calibration LUT to AWRx device phase-shifter configuration matrix
 local psSettings = {}
 local azAntIdx = 1
---local angleIdx =  1 --> angle = 80 deg
+local angleIdx =  1 --> angle = 75 deg
 --local angleIdx = 16 --> angle = 90 deg
-local angleIdx = 31 --> angle = 100 deg
+--local angleIdx = 31 --> angle = 105deg
 -- TX-BF Angle and calibration lookup table
 
 -- initialize phase shifter value matrix based on steering angle requested
@@ -112,77 +113,78 @@ if (runWithCalibration) then
  
 	-- LUT calibration table - copy and pasted from matlab output 
 	psCalLUT = { 
-	{0,30,61,28,59,26,57,24,54},	--> angle = 75 deg
-	{0,33,2,35,4,37,6,39,8    },
-	{0,35,6,41,12,48,19,54,25 },
-	{0,37,10,48,21,58,32,5,43 },
-	{0,39,15,54,30,5,45,21,60 },
-	{0,41,19,61,39,16,58,36,14},
-	{0,43,23,3,47,27,7,51,31  },
-	{0,46,28,10,56,38,21,3,49 },
-	{0,48,32,17,1,50,34,18,3  },
-	{0,50,37,23,10,61,47,34,20},
-	{0,52,41,30,19,8,61,49,38 },
-	{0,55,46,37,28,19,10,1,56 },
-	{0,57,50,43,37,30,23,17,10},
-	{0,59,55,50,46,41,37,32,28}, 
-	{0,61,59,57,55,52,50,48,46},	--> angle = 90 deg
-	{0,0,0,0,0,0,0,0,0        },
-	{0,2,4,6,8,11,13,15,17    },
-	{0,4,8,13,17,22,26,31,35  },
-	{0,6,13,20,26,33,40,46,53 },
-	{0,8,17,26,35,44,53,62,7  },
-	{0,11,22,33,44,55,2,14,25 },
-	{0,13,26,40,53,2,16,29,43 },
-	{0,15,31,46,62,13,29,45,60},
-	{0,17,35,53,7,25,42,60,14 },
-	{0,20,40,60,16,36,56,12,32},
-	{0,22,44,2,24,47,5,27,49  },
-	{0,24,48,9,33,58,18,42,3  },
-	{0,26,53,15,42,5,31,58,20 },
-	{0,28,57,22,51,15,44,9,38 }, 
-	{0,30,61,28,59,26,57,24,55}, 
-	{0,33,2,35,4,37,6,39,9    }, --> angle = 105 deg
-	}
+	{0,40,21,29,8,47,60,33,12}, --> angle = 75
+	{0,43,22,36,13,58,9,49,29},
+	{0,46,30,42,25,8,19,63,47},
+	{0,47,34,49,31,16,35,18,63},
+	{0,50,36,57,39,27,46,31,21},
+	{0,52,40,62,49,38,59,46,36},
+	{0,55,46,5,60,49,10,61,53},
+	{0,56,50,11,3,59,25,15,7},
+	{0,58,55,21,11,7,36,30,23},
+	{0,61,58,24,20,21,48,44,45},
+	{0,62,62,31,29,29,61,59,59},
+	{0,1,4,37,38,40,11,11,13},
+	{0,4,10,44,47,52,24,27,34},
+	{0,8,12,52,56,62,37,42,49},
+	{0,10,16,60,1,11,52,58,4},
+	{0,0,0,0,0,0,0,0,0},	--> angle = 90
+	{0,12,26,7,21,32,14,26,38},
+	{0,17,29,14,30,44,27,41,56},
+	{0,16,33,20,36,54,40,56,11},
+	{0,21,38,27,46,3,54,10,30},
+	{0,20,44,33,54,15,4,23,46},
+	{0,22,51,40,2,23,18,39,63},
+	{0,26,52,47,10,36,29,57,21},
+	{0,30,56,54,16,46,44,9,36},
+	{0,29,61,61,28,60,56,25,53},
+	{0,34,3,4,33,5,8,37,7},
+	{0,33,6,11,44,18,21,53,24},
+	{0,36,11,18,52,28,32,5,45},
+	{0,38,17,25,61,37,46,19,59},
+	{0,40,19,29,6,51,58,33,15},
+	{0,43,22,36,17,58,7,50,29}, --> angle = 105 deg
+	}  
 	
 	
 else 
 	-- ideal values (no calibration applied) 
 	psCalLUT = { 
-	{0,30,61,28,59,26,57,24,54 }, --> angle = 75 deg
-	{0,33,2,35,4,37,6,39,8     }, 
-	{0,35,6,41,12,48,19,54,25  }, 
-	{0,37,10,48,21,58,32,5,43  }, 
-	{0,39,15,54,30,5,45,21,60  }, 
-	{0,41,19,61,39,16,58,36,14 },
-	{0,43,23,3,47,27,7,51,31   }, 
-	{0,46,28,10,56,38,21,3,49  }, 
-	{0,48,32,17,1,50,34,18,3   }, 
-	{0,50,37,23,10,61,47,34,20 },
-	{0,52,41,30,19,8,61,49,38  }, 
-	{0,55,46,37,28,19,10,1,56  }, 
-	{0,57,50,43,37,30,23,17,10 },
-	{0,59,55,50,46,41,37,32,28 },
-	{0,61,59,57,55,52,50,48,46 },
-	{0,0,0,0,0,0,0,0,0         }, --> angle = 90 deg 
-	{0,2,4,6,8,11,13,15,17     }, 
-	{0,4,8,13,17,22,26,31,35   }, 
-	{0,6,13,20,26,33,40,46,53  }, 
-	{0,8,17,26,35,44,53,62,7   }, 
-	{0,11,22,33,44,55,2,14,25  }, 
-	{0,13,26,40,53,2,16,29,43  }, 
-	{0,15,31,46,62,13,29,45,60 },
-	{0,17,35,53,7,25,42,60,14  }, 
-	{0,20,40,60,16,36,56,12,32 },
-	{0,22,44,2,24,47,5,27,49   }, 
-	{0,24,48,9,33,58,18,42,3   }, 
-	{0,26,53,15,42,5,31,58,20  }, 
-	{0,28,57,22,51,15,44,9,38  }, 
-	{0,30,61,28,59,26,57,24,55 },
-	{0,33,2,35,4,37,6,39,9     }, --> angle = 105 deg 
+	{	0,30,61,28,59,26,57,24,54	},
+	{	0,33,2,35,4,37,6,39,8		},
+	{	0,35,6,41,12,48,19,54,25	},
+	{	0,37,10,48,21,58,32,5,43	},
+	{	0,39,15,54,30,5,45,21,60	},
+	{	0,41,19,61,39,16,58,36,14	},
+	{	0,43,23,3,47,27,7,51,31		},
+	{	0,46,28,10,56,38,21,3,49	},
+	{	0,48,32,17,1,50,34,18,3		},
+	{	0,50,37,23,10,61,47,34,20	},
+	{	0,52,41,30,19,8,61,49,38	},
+	{	0,55,46,37,28,19,10,1,56	},
+	{	0,57,50,43,37,30,23,17,10	},
+	{	0,59,55,50,46,41,37,32,28	},
+	{	0,61,59,57,55,52,50,48,46	},
+	{	0,0,0,0,0,0,0,0,0			},
+	{	0,2,4,6,8,11,13,15,17		},
+	{	0,4,8,13,17,22,26,31,35		},
+	{	0,6,13,20,26,33,40,46,53	},
+	{	0,8,17,26,35,44,53,62,7		},
+	{	0,11,22,33,44,55,2,14,25	},
+	{	0,13,26,40,53,2,16,29,43	},
+	{	0,15,31,46,62,13,29,45,60	},
+	{	0,17,35,53,7,25,42,60,14	},
+	{	0,20,40,60,16,36,56,12,32	},
+	{	0,22,44,2,24,47,5,27,49		},
+	{	0,24,48,9,33,58,18,42,3		},
+	{	0,26,53,15,42,5,31,58,20	},
+	{	0,28,57,22,51,15,44,9,38	},
+	{	0,30,61,28,59,26,57,24,55	},
+	{	0,33,2,35,4,37,6,39,9		}, --> angle = 105 deg 
 	} 
 
 end
+
 
 -- create psSettings matrix which will be used to program the individual devices
 for devIdx = 1, 4 do 
