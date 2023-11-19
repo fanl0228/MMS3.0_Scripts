@@ -80,8 +80,8 @@ local hpfCornerFreq2            =   0      -- 0: 350KHz, 1: 700KHz, 2: 1.4MHz, 3
 local start_chirp_tx            =   0
 local end_chirp_tx              =   0
 local nchirp_loops              =   252   -- Number of chirps per frame
-local nframes_master            =   20     -- Number of Frames for Master
-local nframes_slave             =   20     -- Number of Frames for Slaves
+local nframes_master            =   50     -- Number of Frames for Master
+local nframes_slave             =   50     -- Number of Frames for Slaves
 local Inter_Frame_Interval      =   150   -- ms
 local trigger_delay             =   0     -- us
 local trig_list                 =   {1,2,2,2} -- 1: Software trigger, 2: Hardware trigger  
@@ -281,7 +281,7 @@ function CaptureData(angleIdx)
 			
 			-- TDA ARM
 			WriteToLog("Starting TDA ARM...\n", "blue")
-			capture_directory = "BeamAngle"..tostring(angleIdxString) .. "_Sample01"
+			capture_directory = "BeamAngle"..tostring(angleIdxString) .. "_Sample05"
 			WriteToLog("capture_directory:  "..capture_directory.."  --------\n", "blue")
 			status = ar1.TDACaptureCard_StartRecord_mult(1, n_files_allocation, data_packaging, capture_directory, num_frames_to_capture)
 			if (status == 0) then
@@ -606,7 +606,7 @@ monitorTempLogFile:write("Timestamp, Rx1TempVal[1], Rx2TempVal[1], Rx3TempVal[1]
 
 
 -- loop through all angle offset settings and take a few frames of data
-for angleIdx = 1, 121, 2 do
+for angleIdx = 31, 91, 10 do
 
 	local psSettings = {}
 	local azAntIdx = 1
